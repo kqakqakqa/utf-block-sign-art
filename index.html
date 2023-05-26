@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <div>
+        <label for="input">输入文字：</label>
+        <textarea type="text" id="input">←换乘 1号线 To Line 1</textarea>
+        <button onclick="main()">绘制</button>
+    </div>
+    <div id="canvasContainer"></div>
+    <div id="artContainer"></div>
+</body>
+
+<script>
+    function main() {
+        let artContainer = document.getElementById("artContainer"),
+            canvasContainer = document.getElementById("canvasContainer"),
+            inputText = document.getElementById("input").value;
+
+        let canvases = text2canvases(inputText);
+        let arts = canvases2arts(canvases);
+
+        renderCanvases(canvases, canvasContainer);
+        renderArts(arts, artContainer);
+    }
+
+    function text2canvases(text) {
+        let canvases = [];
+        let textArray = Array.from(text);
+        while (textArray.length) { // 逐字绘制
+            let canvas = newCanvas();
+            let ctx = canvas.getContext("2d");
+            let widthUsed = 0;
+            do { // 判断剩余空间足够再绘制
+                let character = textArray.shift();
+                ctx.fillText(character, widthUsed, canvas.height - 1);
+                widthUsed += ctx.measureText(character).width;
+                widthCharacterNext = ctx.measureText(textArray[0]).width;
+            } while (widthUsed + widthCharacterNext <= canvas.width);
+            canvases.push(canvas);
+        }
+        return canvases;
+
+        function newCanvas() {
+            let canvas = document.createElement("canvas");
+            canvas.className = "artCanvas";
+            canvas.width = 20;
+            canvas.height = 8;
+            let ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#000";
+            ctx.font = "8px 'Chill Bitmap 7px'";
+            return canvas;
+        }
+    }
+
+    function canvases2arts(canvases) {
+        const ALCHEMY = [[[["  ", " ▗"], ["▖ ", "▄"]], [[" ▝", " ▐"], ["▞", "▟"]]], [[["▘ ", "▚",], ["▌ ", "▙",]], [["▀", "▜"], ["▛", "█"]]]]; // 简单粗暴的编码
+        let arts = [];
+
+        canvases.forEach(canvas => {
+            let canvasData = Array.from(new Array(canvas.height), () => new Array(canvas.width)); // 空二维数组
+            let artArray = Array.from(new Array(canvas.height / 2), () => new Array(canvas.width / 2));
+
+            let ctx = canvas.getContext("2d");
+            let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) { // 遍历像素
+                    let i = (y * canvas.width + x) * 4;
+                    const R = imgData[i];
+                    const G = imgData[i + 1];
+                    const B = imgData[i + 2];
+                    let pixel = ((R + G + B) / 3 < 127) ? 1 : 0; // 二值化
+
+                    canvasData[y][x] = pixel;
+                    if (y % 2 && x % 2) { // 像素4合1，生成UTF-8块元素
+                        let p1 = canvasData[y - 1][x - 1],
+                            p2 = canvasData[y - 1][x],
+                            p3 = canvasData[y][x - 1];
+                        artArray[(y - 1) / 2][(x - 1) / 2] = ALCHEMY[p1][p2][p3][pixel];
+                    }
+                }
+            }
+            let artLines = artArray.map(e => e.join(""));
+            arts.push(artLines);
+        });
+        return arts;
+    }
+
+    function renderCanvases(canvases, container) {
+        container.innerHTML = "";
+        canvases.forEach(canvas => {
+            container.appendChild(canvas);
+        });
+    }
+
+    function renderArts(arts, container) {
+        container.innerHTML = "";
+        arts.forEach(artLines => {
+            let artLinesElement = document.createElement("div");
+            artLinesElement.className = "artLines";
+            artLines.forEach(artText => {
+                let artElement = document.createElement("pre");
+                artElement.className = "art";
+                artElement.innerText = artText;
+                artLinesElement.appendChild(artElement);
+            });
+            container.appendChild(artLinesElement);
+        });
+    }
+</script>
+
+<style>
+    @font-face {
+        font-family: "Chill Bitmap 7px";
+        src: url("ChillBitmap7x.woff2") format("woff2");
+    }
+
+    * {
+        font-size: large;
+    }
+
+    .art {
+        line-height: 1.25em;
+        font-size: 2em;
+        margin: 0;
+        user-select: all;
+        border: 0.5px dashed #ccc;
+    }
+
+    .artLines {
+        border: 1px solid #ccc;
+        margin-right: 3px;
+        display: inline-block;
+    }
+
+    #input {
+        width: 50vw;
+        font-size: 2em;
+        display: inline-block;
+        font-family: "Chill Bitmap 7px";
+    }
+
+    .artCanvas {
+        width: 10vw;
+        border: 1px solid #ccc;
+        image-rendering: pixelated;
+    }
+</style>
+
+</html>
