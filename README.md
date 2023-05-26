@@ -1,5 +1,7 @@
 # utf-block-sign-art
 
+![preview.png](preview.png)
+
 一个使用UTF-8块元素生成大型字符的网页程序。
 
 用于Minecraft告示牌。
