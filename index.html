@@ -7,11 +7,18 @@
 </head>
 
 <body>
-    <div>
-        <label for="input">输入文字： Input text: </label>
-        <textarea type="text" id="input">←换乘 1号线 To Line 1</textarea>
-        <button onclick="main()">绘制 Draw</button>
-    </div>
+    <p><label for="input">输入文字： Input text: </label></p>
+    <p><textarea type="text" id="input">←换乘 1号线 To Line 1</textarea></p>
+    <p>
+        <label>
+            <input type="radio" name="type" value="sign" checked />
+            <img src="sign.webp" /></label>
+
+        <label>
+            <input type="radio" name="type" id="hangingSignToggle" value="hanging-sign" />
+            <img src="hanging-sign.webp" /></label>
+    </p>
+    <p><button onclick="main()">绘制 Draw</button></p>
     <div id="canvasContainer"></div>
     <div id="artContainer"></div>
 </body>
@@ -19,21 +26,23 @@
 <script>
     function main() {
 
-        inputText = (document.fonts.check("8px 'Chill Bitmap 7px'")) ? (document.getElementById("input").value) : "字体加载中... Font loading...";
-        let artContainer = document.getElementById("artContainer"),
-            canvasContainer = document.getElementById("canvasContainer");
-        let canvases = text2canvases(inputText);
+        let inputText = (document.fonts.check("8px 'Chill Bitmap 7px'")) ? (document.getElementById("input").value) : "字体加载中... Font loading...";
+        let isHangingSign = document.getElementById("hangingSignToggle").checked;
+
+        let canvases = text2canvases(inputText, isHangingSign);
         let arts = canvases2arts(canvases);
 
+        let artContainer = document.getElementById("artContainer"),
+            canvasContainer = document.getElementById("canvasContainer");
         renderCanvases(canvases, canvasContainer);
         renderArts(arts, artContainer);
     }
 
-    function text2canvases(text) {
+    function text2canvases(text, isHangingSign) {
         let canvases = [];
         let textArray = Array.from(text);
         while (textArray.length) { // 逐字绘制
-            let canvas = newCanvas();
+            let canvas = newCanvas(isHangingSign);
             let ctx = canvas.getContext("2d");
             let widthUsed = 0;
             do { // 判断剩余空间足够再绘制
@@ -46,11 +55,11 @@
         }
         return canvases;
 
-        function newCanvas() {
+        function newCanvas(isHangingSign) {
             let canvas = document.createElement("canvas");
             canvas.className = "artCanvas";
-            canvas.width = 20;
             canvas.height = 8;
+            canvas.width = isHangingSign ? 12 : 20;
             let ctx = canvas.getContext("2d");
             ctx.fillStyle = "#fff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -152,6 +161,22 @@
         width: 10vw;
         border: 1px solid #ccc;
         image-rendering: pixelated;
+    }
+
+    label>img {
+        width: 2em;
+        height: 2em;
+        image-rendering: pixelated;
+        border: 1px solid transparent;
+        border-radius: 2px;
+    }
+
+    label>input {
+        display: none;
+    }
+
+    label>input:checked+img {
+        border: 1px solid #000;
     }
 </style>
 
