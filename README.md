@@ -1,6 +1,6 @@
 # utf-block-sign-art
 
-![kqakqakqa.github.io/utf-block-sign-art/preview.png](https://kqakqakqa.github.io/utf-block-sign-art/preview.webp)
+![kqakqakqa.github.io/utf-block-sign-art/preview.webp](https://kqakqakqa.github.io/utf-block-sign-art/preview.webp)
 
 一个使用UTF-8块元素生成大型字符的网页程序。
 
