@@ -7,35 +7,51 @@
 </head>
 
 <body>
-    <p><label for="input">输入文字： Input text: </label></p>
-    <p><textarea type="text" id="input">←换乘 1号线 To Line 1</textarea></p>
-    <p>
-        <label>
-            <input type="radio" name="type" value="sign" checked />
-            <img src="sign.webp" /></label>
-
-        <label>
-            <input type="radio" name="type" id="hangingSignToggle" value="hanging-sign" />
-            <img src="hanging-sign.webp" /></label>
-    </p>
+    <label>
+        输入文字 Input text：<br />
+        <textarea type="text" class="autoWidth" id="input">←换乘 1号线&#10;←To Line 1</textarea>
+    </label>
+    <div id="advancedContainer" class="autoWidth">
+        <p>
+            标志牌类型 Sign type：
+            <label>
+                <input type="radio" class="signType" name="signType" value="sign" checked />
+                <img src="sign.webp" alt="sign" />
+            </label>
+            <label>
+                <input type="radio" class="signType" name="signType" value="hangingSign" />
+                <img src="hanging-sign.webp" alt="hanging sign" />
+            </label>
+        </p>
+        <p>
+            <label>
+                白色2×2像素 White 2×2 block：
+                <input class="customChar" name="customChar" id="customChar_white" value="  " />
+            </label>
+            <label>
+                黑色2×2像素 Black 2×2 block：
+                <input class="customChar" name="customChar" id="customChar_black" value="█" />
+            </label>
+        </p>
+    </div>
     <p><button onclick="main()">绘制 Draw</button></p>
     <div id="canvasContainer"></div>
-    <div id="artContainer"></div>
+    <div id="signsContainer"></div>
 </body>
 
 <script>
     function main() {
 
         let inputText = (document.fonts.check("8px 'Chill Bitmap 7px'")) ? (document.getElementById("input").value) : "字体加载中... Font loading...";
-        let isHangingSign = document.getElementById("hangingSignToggle").checked;
+        let isHangingSign = document.querySelector(".signType:checked").value == "hangingSign";
 
         let canvases = text2canvases(inputText, isHangingSign);
-        let arts = canvases2arts(canvases);
+        let signs = canvases2signs(canvases);
 
-        let artContainer = document.getElementById("artContainer"),
+        let signsContainer = document.getElementById("signsContainer"),
             canvasContainer = document.getElementById("canvasContainer");
         renderCanvases(canvases, canvasContainer);
-        renderArts(arts, artContainer);
+        renderSigns(signs, signsContainer);
     }
 
     function text2canvases(text, isHangingSign) {
@@ -46,18 +62,18 @@
             let ctx = canvas.getContext("2d");
             let widthUsed = 0;
             do { // 判断剩余空间足够再绘制
-                let character = textArray.shift();
-                ctx.fillText(character, widthUsed, canvas.height - 1);
-                widthUsed += ctx.measureText(character).width;
-                widthCharacterNext = ctx.measureText(textArray[0]).width;
-            } while (widthUsed + widthCharacterNext <= canvas.width);
+                let Char = textArray.shift();
+                ctx.fillText(Char, widthUsed, canvas.height - 1);
+                widthUsed += ctx.measureText(Char).width;
+                widthCharNext = ctx.measureText(textArray[0]).width;
+            } while (widthUsed + widthCharNext <= canvas.width);
             canvases.push(canvas);
         }
         return canvases;
 
         function newCanvas(isHangingSign) {
             let canvas = document.createElement("canvas");
-            canvas.className = "artCanvas";
+            canvas.className = "previewCanvas";
             canvas.height = 8;
             canvas.width = isHangingSign ? 12 : 20;
             let ctx = canvas.getContext("2d");
@@ -69,13 +85,15 @@
         }
     }
 
-    function canvases2arts(canvases) {
-        const ALCHEMY = [[[["  ", " ▗"], ["▖ ", "▄"]], [[" ▝", " ▐"], ["▞", "▟"]]], [[["▘ ", "▚",], ["▌ ", "▙",]], [["▀", "▜"], ["▛", "█"]]]]; // 简单粗暴的编码
-        let arts = [];
+    function canvases2signs(canvases) {
+        let charWhite = document.getElementById("customChar_white").value;
+        let charBlack = document.getElementById("customChar_black").value;
+        const MAGICARRAY = [[[[charWhite, " ▗"], ["▖ ", "▄"]], [[" ▝", " ▐"], ["▞", "▟"]]], [[["▘ ", "▚",], ["▌ ", "▙",]], [["▀", "▜"], ["▛", charBlack]]]];
+        let signs = [];
 
         canvases.forEach(canvas => {
             let canvasData = Array.from(new Array(canvas.height), () => new Array(canvas.width)); // 空二维数组
-            let artArray = Array.from(new Array(canvas.height / 2), () => new Array(canvas.width / 2));
+            let sign = Array.from(new Array(canvas.height / 2), () => new Array(canvas.width / 2));
 
             let ctx = canvas.getContext("2d");
             let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
@@ -93,14 +111,14 @@
                         let p1 = canvasData[y - 1][x - 1],
                             p2 = canvasData[y - 1][x],
                             p3 = canvasData[y][x - 1];
-                        artArray[(y - 1) / 2][(x - 1) / 2] = ALCHEMY[p1][p2][p3][pixel];
+                        sign[(y - 1) / 2][(x - 1) / 2] = MAGICARRAY[p1][p2][p3][pixel];
                     }
                 }
             }
-            let artLines = artArray.map(e => e.join(""));
-            arts.push(artLines);
+            sign = sign.map(e => e.join(""));
+            signs.push(sign);
         });
-        return arts;
+        return signs;
     }
 
     function renderCanvases(canvases, container) {
@@ -110,18 +128,18 @@
         });
     }
 
-    function renderArts(arts, container) {
+    function renderSigns(signs, container) {
         container.innerHTML = "";
-        arts.forEach(artLines => {
-            let artLinesElement = document.createElement("div");
-            artLinesElement.className = "artLines";
-            artLines.forEach(artText => {
-                let artElement = document.createElement("pre");
-                artElement.className = "art";
-                artElement.innerText = artText;
-                artLinesElement.appendChild(artElement);
+        signs.forEach(sign => {
+            let signElement = document.createElement("div");
+            signElement.className = "sign";
+            sign.forEach(signLineText => {
+                let signLineElement = document.createElement("pre");
+                signLineElement.className = "signLine";
+                signLineElement.innerText = signLineText;
+                signElement.appendChild(signLineElement);
             });
-            container.appendChild(artLinesElement);
+            container.appendChild(signElement);
         });
     }
 </script>
@@ -134,49 +152,65 @@
 
     * {
         font-size: large;
+        line-height: 2rem;
     }
 
-    .art {
-        line-height: 1.25em;
-        font-size: 2em;
-        margin: 0;
-        user-select: all;
-        border: 0.5px dashed #ccc;
-    }
-
-    .artLines {
-        border: 1px solid #ccc;
-        margin-right: 3px;
-        display: inline-block;
+    .autoWidth {
+        width: 100vmin;
+        max-width: 100%;
+        border-radius: 2px;
+        padding: 8px;
+        box-sizing: border-box;
     }
 
     #input {
-        width: min(100vmin, 100%);
-        font-size: 2em;
-        display: inline-block;
+        font-size: 2rem;
         font-family: "Chill Bitmap 7px";
     }
 
-    .artCanvas {
-        width: 10vw;
-        border: 1px solid #ccc;
-        image-rendering: pixelated;
+    #advancedContainer {
+        background-color: #eee;
     }
 
-    label>img {
-        width: 2em;
-        height: 2em;
+    .signType {
+        display: none;
+    }
+
+    .signType+img {
+        width: 2rem;
+        height: 2rem;
         image-rendering: pixelated;
         border: 1px solid transparent;
         border-radius: 2px;
     }
 
-    label>input {
-        display: none;
+    .signType:checked+img {
+        border: 1px solid #000;
     }
 
-    label>input:checked+img {
-        border: 1px solid #000;
+    .customChar {
+        font-family: monospace;
+        width: 4rem;
+    }
+
+    .previewCanvas {
+        height: 3rem;
+        border: 1px solid #ccc;
+        image-rendering: pixelated;
+    }
+
+    .signLine {
+        line-height: 2.25rem;
+        font-size: 1.5rem;
+        margin: 0;
+        user-select: all;
+        border: 0.5px dashed #ccc;
+    }
+
+    .sign {
+        border: 1px solid #ccc;
+        margin-right: 3px;
+        display: inline-block;
     }
 </style>
 
