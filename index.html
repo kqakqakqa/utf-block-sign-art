@@ -129,34 +129,34 @@
     }
 
     function renderSigns(signs, container) {
-    container.innerHTML = "";
-    signs.forEach((sign, index) => {
-        let signElement = document.createElement("div");
-        signElement.className = "sign";
-        let signText = "";
+        container.innerHTML = "";
+        signs.forEach(sign => {
+            let signElement = document.createElement("div");
+            signElement.className = "sign";
+            let signText = "";
 
-        sign.forEach(signLineText => {
-            let signLineElement = document.createElement("pre");
-            signLineElement.className = "signLine";
-            signLineElement.innerText = signLineText;
-            signElement.appendChild(signLineElement);
-            signText += signLineText + "\n";
-        });
-
-        let copyButton = document.createElement("button");
-        copyButton.innerText = "复制到剪贴板";
-        copyButton.onclick = function() {
-            navigator.clipboard.writeText(signText).then(() => {
-                alert("复制成功！");
-            }).catch(err => {
-                alert("复制失败: " + err);
+            sign.forEach(signLineText => {
+                let signLineElement = document.createElement("pre");
+                signLineElement.className = "signLine";
+                signLineElement.innerText = signLineText;
+                signElement.appendChild(signLineElement);
             });
-        };
 
-        signElement.appendChild(copyButton);
-        container.appendChild(signElement);
-    });
-}
+            let copyButton = document.createElement("button");
+            copyButton.innerText = "复制 Copy";
+            copyButton.addEventListener("click", () => {
+                navigator.clipboard.writeText(sign.join("\n")).then(() => {
+                    copyButton.innerText = "已复制 Copied";
+                }).catch(err => {
+                    window.alert("复制失败: " + err);
+                });
+            });
+            signElement.appendChild(copyButton);
+
+            signElement.appendChild(copyButton);
+            container.appendChild(signElement);
+        });
+    }
 </script>
 
 <style>
@@ -220,6 +220,7 @@
         margin: 0;
         user-select: all;
         border: 0.5px dashed #ccc;
+        text-align: center;
     }
 
     .sign {
