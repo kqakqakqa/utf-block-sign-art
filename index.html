@@ -129,19 +129,34 @@
     }
 
     function renderSigns(signs, container) {
-        container.innerHTML = "";
-        signs.forEach(sign => {
-            let signElement = document.createElement("div");
-            signElement.className = "sign";
-            sign.forEach(signLineText => {
-                let signLineElement = document.createElement("pre");
-                signLineElement.className = "signLine";
-                signLineElement.innerText = signLineText;
-                signElement.appendChild(signLineElement);
-            });
-            container.appendChild(signElement);
+    container.innerHTML = "";
+    signs.forEach((sign, index) => {
+        let signElement = document.createElement("div");
+        signElement.className = "sign";
+        let signText = "";
+
+        sign.forEach(signLineText => {
+            let signLineElement = document.createElement("pre");
+            signLineElement.className = "signLine";
+            signLineElement.innerText = signLineText;
+            signElement.appendChild(signLineElement);
+            signText += signLineText + "\n";
         });
-    }
+
+        let copyButton = document.createElement("button");
+        copyButton.innerText = "复制到剪贴板";
+        copyButton.onclick = function() {
+            navigator.clipboard.writeText(signText).then(() => {
+                alert("复制成功！");
+            }).catch(err => {
+                alert("复制失败: " + err);
+            });
+        };
+
+        signElement.appendChild(copyButton);
+        container.appendChild(signElement);
+    });
+}
 </script>
 
 <style>
