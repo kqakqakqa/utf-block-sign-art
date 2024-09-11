@@ -128,34 +128,66 @@
         });
     }
 
-    function renderSigns(signs, container) {
-        container.innerHTML = "";
-        signs.forEach(sign => {
-            let signElement = document.createElement("div");
-            signElement.className = "sign";
-            let signText = "";
+	function renderSigns(signs, container) {
+		container.innerHTML = "";
+		signs.forEach(sign => {
+			let signElement = document.createElement("div");
+			signElement.className = "sign";
 
-            sign.forEach(signLineText => {
-                let signLineElement = document.createElement("pre");
-                signLineElement.className = "signLine";
-                signLineElement.innerText = signLineText;
-                signElement.appendChild(signLineElement);
-            });
+			sign.forEach(signLineText => {
+				let signLineElement = document.createElement("pre");
+				signLineElement.className = "signLine";
+				signLineElement.innerText = signLineText;
+				signElement.appendChild(signLineElement);
+			});
 
-            let copyButton = document.createElement("button");
-            copyButton.innerText = "复制 Copy";
-            copyButton.addEventListener("click", () => {
-                navigator.clipboard.writeText(sign.join("\n")).then(() => {
-                    copyButton.innerText = "已复制 Copied";
-                }).catch(err => {
-                    window.alert("复制失败: " + err);
-                });
-            });
-            signElement.appendChild(copyButton);
+			let copyButton = document.createElement("button");
+			copyButton.innerText = "复制 Copy";
+			copyButton.addEventListener("click", () => {
+				copy(sign.join("\n"), (err) => {
+					if (err) {
+						window.alert("复制失败: " + err);
+					} else {
+						copyButton.innerText = "已复制 Copied";
+					}
+				});
+			});
+			signElement.appendChild(copyButton);
 
-            container.appendChild(signElement);
-        });
-    }
+			container.appendChild(signElement);
+		});
+	}
+
+	function copy(text, callback) {
+		const clipboardObj = navigator.clipboard;
+		try {
+			if (clipboardObj) {
+				clipboardObj.writeText(text).then(() => {
+					callback && callback();
+				}).catch(() => {
+					// 部分設備不支持
+					execCommand();
+				});
+			} else {
+				execCommand();
+			}
+
+		} catch (e) {
+			callback && callback(e || '複製錯誤');
+		}
+
+		function execCommand() {
+			let oInput = document.createElement('input'); // 创建input
+			oInput.setAttribute('readonly', 'readonly'); 
+			oInput.value = text;
+			document.body.appendChild(oInput); // inputbody
+			oInput.select(); 
+			document.execCommand('Copy'); // 执行c
+			oInput.style.display = 'none'; 
+			oInput.remove(); // input销毁
+			callback && callback();
+		}
+	}
 </script>
 
 <style>
