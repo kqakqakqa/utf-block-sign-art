@@ -58,7 +58,7 @@
 <script>
   const customChars = {
     "1.19": ["  ", " ▗", "▖ ", "▄", " ▝", " ▐", "▞", "▟", "▘ ", "▚", "▌ ", "▙", "▀", "▜", "▛", "█"],
-    "1.20": ["  ", " ◛", "◛ ", "◛◛", " ◚", " ▌", "◛◚", "◛▌", "◚ ", "◚◛", "▌ ", "▌◛", "◚◚", "◚▌", "▌◚", "▌▌"],
+    "1.20": ["  ", " ◛", "◛ ", "▄", " ◚", "▐", "🙾", "◛▉", "◚ ", "🙿", "▌ ", "▉◛", "▀", "◚▉", "▉◚", "█"],
   }
   let customChar;
   setCustomChar(customChars["1.20"]);
@@ -126,7 +126,7 @@
       let canvas = document.createElement("canvas");
       canvas.className = "previewCanvas";
       canvas.height = 8;
-      canvas.width = isHangingSign ? 12 : (gameVersion === "1.0" ? 20 : 18);
+      canvas.width = isHangingSign ? 12 : (gameVersion === "1.0" ? 20 : 20);
       let ctx = canvas.getContext("2d");
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
