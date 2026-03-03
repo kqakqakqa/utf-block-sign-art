@@ -28,8 +28,16 @@
       </div>
       <div id="customChar">
         <div id="customCharButtons">自定义字符 Custom characters：
-          <button type="button" onclick="setCustomChar(customChars['1.19']);">1.0~1.19.4</button>
-          <button type="button" onclick="setCustomChar(customChars['1.20']);">1.20.1+</button>
+          <label>
+            <input type="radio" onclick="setCustomChar(customChars['1.19']);" class="gameVersion" name="gameVersion"
+              value="1.0" />
+            1.0~1.19.4
+          </label>
+          <label>
+            <input type="radio" onclick="setCustomChar(customChars['1.20']);" class="gameVersion" name="gameVersion"
+              value="1.20" checked />
+            1.20.1+
+          </label>
         </div>
         <div id="customCharWrapper">
         </div>
@@ -50,7 +58,7 @@
 <script>
   const customChars = {
     "1.19": ["  ", " ▗", "▖ ", "▄", " ▝", " ▐", "▞", "▟", "▘ ", "▚", "▌ ", "▙", "▀", "▜", "▛", "█"],
-    "1.20": ["  ", " ▄", "▄ ", "▄▄", " ▀", " █", "▄▀", "▄█", "▀ ", "▀▄", "█ ", "█▄", "▀▀", "▀█", "█▀", "██"],
+    "1.20": ["  ", " ◛", "◛ ", "◛◛", " ◚", " ▌", "◛◚", "◛▌", "◚ ", "◚◛", "▌ ", "▌◛", "◚◚", "◚▌", "▌◚", "▌▌"],
   }
   let customChar;
   setCustomChar(customChars["1.20"]);
@@ -84,9 +92,10 @@
   function main() {
     const inputText = (document.fonts.check("8px 'Chill Bitmap 7px'")) ? (document.querySelector("#inputWrapper > textarea").value) : "字体加载中... Font loading...";
     const isHangingSign = document.querySelector(".signType:checked").value == "hangingSign";
+    const gameVersion = document.querySelector(".gameVersion:checked").value;
     customChar = getCustomChar();
 
-    const canvases = text2canvases(inputText, isHangingSign);
+    const canvases = text2canvases(inputText, isHangingSign, gameVersion);
     const signs = canvases2signs(canvases);
 
     const signsWrapper = document.querySelector("#signsWrapper");
@@ -96,11 +105,11 @@
     renderSigns(signs, signsWrapper);
   }
 
-  function text2canvases(text, isHangingSign) {
+  function text2canvases(text, isHangingSign, gameVersion) {
     let canvases = [];
     let textArray = Array.from(text);
     while (textArray.length) { // 逐字绘制
-      let canvas = newCanvas(isHangingSign);
+      let canvas = newCanvas(isHangingSign, gameVersion);
       let ctx = canvas.getContext("2d");
       let widthUsed = 0;
       do { // 判断剩余空间足够再绘制
@@ -113,11 +122,11 @@
     }
     return canvases;
 
-    function newCanvas(isHangingSign) {
+    function newCanvas(isHangingSign, gameVersion) {
       let canvas = document.createElement("canvas");
       canvas.className = "previewCanvas";
       canvas.height = 8;
-      canvas.width = isHangingSign ? 12 : 20;
+      canvas.width = isHangingSign ? 12 : (gameVersion === "1.0" ? 20 : 18);
       let ctx = canvas.getContext("2d");
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -309,6 +318,21 @@
     column-gap: 0.5em;
   }
 
+  .gameVersion {
+    display: none;
+  }
+
+  #customCharButtons>label {
+    padding: 0 0.5em;
+    height: 2em;
+    border: 1px solid transparent;
+    border-radius: 2px;
+  }
+
+  #customCharButtons>label:has(.gameVersion:checked) {
+    border: 1px solid #000;
+  }
+
   #customCharWrapper {
     display: flex;
     /* flex-direction: column; */
@@ -329,13 +353,14 @@
   }
 
   .signLine {
-    line-height: 2.25em;
-    font-size: 1.5em;
+    line-height: 1;
+    font-size: 2em;
     margin: 0;
     -webkit-user-select: all;
     user-select: all;
     border: 0.5px dashed #ccc;
     text-align: center;
+    overflow: hidden;
   }
 
   .sign {
