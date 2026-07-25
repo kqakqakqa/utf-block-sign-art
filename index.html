@@ -21,9 +21,9 @@
         </div>
       </div>
 
-      <!-- Minecraft版本 -->
+      <!-- 版本 -->
       <div id="editionSection" class="config-item">
-        <label class="config-item-label">Minecraft版本</label>
+        <label class="config-item-label">版本</label>
         <div class="config-item-content">
           <label class="radio-option">
             <input type="radio" class="edition" name="edition" value="je" checked />
@@ -94,27 +94,7 @@
       <!-- 字符模式 -->
       <div class="config-item">
         <label class="config-item-label">字符模式</label>
-        <div class="config-item-content">
-          <label class="radio-option">
-            <input type="radio" class="patternSelect" name="patternSelect" value="1.0" checked />
-            <span class="char-symbol">▞</span><span>方块元素（1.0~1.19.4）</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" class="patternSelect" name="patternSelect" value="1.20" />
-            <span class="char-symbol">◛◚</span><span>方块元素（1.20+）</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" class="patternSelect" name="patternSelect" value="1.20-wide" />
-            <span class="char-symbol">▄▀</span><span>方块元素 宽（1.20+）</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" class="patternSelect" name="patternSelect" value="braille" />
-            <span class="char-symbol">⣤⠛</span><span>盲文符号</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" class="patternSelect" name="patternSelect" value="custom" />
-            <span>自定义</span>
-          </label>
+        <div id="patternOptions" class="config-item-content">
         </div>
         <div id="patternSection" class="custom-char-section">
           <div class="canvas-width-row">

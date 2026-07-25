@@ -107,8 +107,8 @@ async function main() {
 
   const inputText = document.querySelector("#textInput").innerText;
   const signType = document.querySelector(".signType:checked").value;
-  const edition = document.querySelector(".edition:checked")?.value || "je";
-  const patternName = document.querySelector(".patternSelect:checked")?.value || "1.0";
+  const edition = document.querySelector(".edition:checked")?.value;
+  const patternName = document.querySelector(".patternSelect:checked")?.value;
   const pixelMapping = patternName === 'custom' ? getPixelMapping() : patterns[patternName].pixelMapping;
 
   const cw = patternName === 'custom' ? getCustomCanvasWidth() : patterns[patternName].canvasWidth;
@@ -169,6 +169,7 @@ function resetParams(fontName) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  generatePatternOptions();
   document.querySelector('#adjustReset').addEventListener('click', () => resetParams(selectedFont));
   document.querySelector('#adjustToggle').addEventListener('click', toggleAdjust);
   document.querySelector('#adjustThreshold').addEventListener('input', () => {
@@ -195,11 +196,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // 自动更新绘制触发器
   document.querySelectorAll('.edition').forEach(radio => {
     radio.addEventListener('change', () => {
+      generatePatternOptions();
       if (autoUpdate) main();
     });
   });
   document.querySelectorAll('.signType').forEach(radio => {
     radio.addEventListener('change', () => {
+      generatePatternOptions();
       if (autoUpdate) main();
     });
   });
@@ -212,11 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (autoUpdate) main();
     });
   });
-  document.querySelectorAll('.patternSelect').forEach(radio => {
-    radio.addEventListener('click', () => {
-      if (autoUpdate) main();
-    });
-  });
+  // 字符模式选项的事件监听器已在generatePatternOptions中添加
 
   document.querySelector('#patternWrapper').addEventListener('input', () => {
     if (autoUpdate) main();
@@ -316,7 +315,7 @@ function getUnsupportedChars(text, fontName) {
       m.actualBoundingBoxAscent === 0 &&
       m.actualBoundingBoxDescent === 1024 &&
       m.width === 1024;
-    console.log(`[font-check] "${char}" U+${char.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')} ` +
+    console.log(`[font-check] "${char}" U+${char.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')} ` +
       `fontBB(${m.fontBoundingBoxAscent},${m.fontBoundingBoxDescent}) ` +
       `actualBB(L=${m.actualBoundingBoxLeft},R=${m.actualBoundingBoxRight},A=${m.actualBoundingBoxAscent},D=${m.actualBoundingBoxDescent}) ` +
       `w=${m.width} → ${isEmptyFallback ? 'UNSUPPORTED' : 'ok'}`);
@@ -352,9 +351,9 @@ function syncHighlight(highlightChars) {
 
   if (!highlightChars) {
     const text = div.innerText;
-    const signType = document.querySelector(".signType:checked")?.value || "sign";
-    const edition = document.querySelector(".edition:checked")?.value || "je";
-    const patternName = document.querySelector(".patternSelect:checked")?.value || "1.0";
+    const signType = document.querySelector(".signType:checked")?.value;
+    const edition = document.querySelector(".edition:checked")?.value;
+    const patternName = document.querySelector(".patternSelect:checked")?.value;
     const cw = patternName === 'custom' ? getCustomCanvasWidth() : patterns[patternName].canvasWidth;
     const canvasWidth = signType === "hangingSign"
       ? (edition === "be" ? cw.beHangingSign : cw.jeHangingSign)
@@ -434,7 +433,7 @@ function renderCanvases(canvases, wrapper) {
 function renderSigns(signs, wrapper, signType, patternName) {
   wrapper.innerHTML = "";
 
-  const edition = document.querySelector(".edition:checked")?.value || "je";
+  const edition = document.querySelector(".edition:checked")?.value;
 
   signs.forEach(sign => {
     let signElement = document.createElement("div");
@@ -458,9 +457,9 @@ function renderSigns(signs, wrapper, signType, patternName) {
       copyButton.addEventListener("click", () => {
         try {
           let text = signLineText;
-          if ((text.match(/[◙◛◚]/g) || []).length >= 11) {
-            text = text.replace(/ $/, '');
-          }
+          // if ((text.match(/[◙◛◚]/g) || []).length >= 11) {
+          //   text = text.replace(/ $/, '');
+          // }
           copyToClipboard(text);
         } catch (err) {
           window.alert("复制失败: " + err);
