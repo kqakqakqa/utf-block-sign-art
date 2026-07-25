@@ -1,0 +1,87 @@
+@font-face {
+  font-family: "Chill Bitmap 7px";
+  src: url("ChillBitmap7x.ttf.woff2") format("woff2");
+}
+@font-face {
+  font-family: "精品點陣體7×7 1.71";
+  src: url("BoutiqueBitmap7x7_1.71.ttf.woff2") format("woff2");
+}
+@font-face {
+  font-family: "QuanPixel 8px";
+  src: url("QuanPixel8px.ttf.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Proportional";
+  src: url("fusion-pixel-8px-proportional-latin.otf.woff2") format("woff2");
+  unicode-range: U+0000-024F, U+0259, U+1E00-1EFF, U+2000-206F, U+2070-209F, U+20A0-20CF, U+2100-214F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+2500-257F, U+2580-259F, U+25A0-25FF, U+2600-26FF, U+2700-27BF, U+E000-F8FF, U+FB00-FB4F, U+FE00-FE0F, U+FE10-FE1F, U+FE20-FE2F, U+FE30-FE4F, U+FF00-FFEF, U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F1FF, U+1F200-1F2FF, U+1F300-1F5FF, U+1F600-1F64F, U+1F680-1F6FF, U+1F900-1F9FF, U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81F, U+2B820-2CEAF, U+2CEB0-2EBEF, U+30000-3134F;
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Proportional";
+  src: url("fusion-pixel-8px-proportional-ja.otf.woff2") format("woff2");
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+3100-312F, U+31F0-31FF, U+3200-32FF, U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF, U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81F, U+2B820-2CEAF, U+2CEB0-2EBEF, U+30000-3134F;
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Proportional";
+  src: url("fusion-pixel-8px-proportional-ko.otf.woff2") format("woff2");
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF, U+D7B0-D7FF, U+FE30-FE4F, U+FF00-FFEF;
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Proportional";
+  src: url("fusion-pixel-8px-proportional-zh_hans.otf.woff2") format("woff2");
+  unicode-range: U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF, U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81F, U+2B820-2CEAF, U+2CEB0-2EBEF, U+30000-3134F;
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Proportional";
+  src: url("fusion-pixel-8px-proportional-zh_hant.otf.woff2") format("woff2");
+  unicode-range: U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF, U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81F, U+2B820-2CEAF, U+2CEB0-2EBEF, U+30000-3134F;
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Monospaced";
+  src: url("fusion-pixel-8px-monospaced-latin.otf.woff2") format("woff2");
+  unicode-range: U+0000-024F, U+0259, U+1E00-1EFF, U+2000-206F, U+2070-209F, U+20A0-20CF, U+2100-214F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+2500-257F, U+2580-259F, U+25A0-25FF, U+2600-26FF, U+2700-27BF, U+E000-F8FF, U+FB00-FB4F, U+FE00-FE0F, U+FE10-FE1F, U+FE20-FE2F, U+FE30-FE4F, U+FF00-FFEF, U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F1FF, U+1F200-1F2FF, U+1F300-1F5FF, U+1F600-1F64F, U+1F680-1F6FF, U+1F900-1F9FF, U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81F, U+2B820-2CEAF, U+2CEB0-2EBEF, U+30000-3134F;
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Monospaced";
+  src: url("fusion-pixel-8px-monospaced-ja.otf.woff2") format("woff2");
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+3100-312F, U+31F0-31FF, U+3200-32FF, U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF, U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81F, U+2B820-2CEAF, U+2CEB0-2EBEF, U+30000-3134F;
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Monospaced";
+  src: url("fusion-pixel-8px-monospaced-ko.otf.woff2") format("woff2");
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF, U+D7B0-D7FF, U+FE30-FE4F, U+FF00-FFEF;
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Monospaced";
+  src: url("fusion-pixel-8px-monospaced-zh_hans.otf.woff2") format("woff2");
+  unicode-range: U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF, U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81F, U+2B820-2CEAF, U+2CEB0-2EBEF, U+30000-3134F;
+}
+@font-face {
+  font-family: "Fusion Pixel 8px Monospaced";
+  src: url("fusion-pixel-8px-monospaced-zh_hant.otf.woff2") format("woff2");
+  unicode-range: U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF, U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81F, U+2B820-2CEAF, U+2CEB0-2EBEF, U+30000-3134F;
+}
+@font-face {
+  font-family: "GuanZhi 8px";
+  src: url("GuanZhiBitmap.ttf.woff2") format("woff2");
+}
+@font-face {
+  font-family: "美績點陣體";
+  src: url("MisekiBitmap.ttf.woff2") format("woff2");
+}
+@font-face {
+  font-family: "美績點陣體 - 明";
+  src: url("MisekiBitmapMincho.ttf.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Public Pixel";
+  src: url("PublicPixel.ttf.woff2") format("woff2");
+}
+@font-face {
+  font-family: "袖珍像素体";
+  src: url("XiuZhenXiangSuTi.ttf.woff2") format("woff2");
+}
+@font-face {
+  font-family: "EmptyFallback";
+  src: url("EmptyFallback.ttf.woff2") format("woff2");
+}
+

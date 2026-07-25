@@ -3,371 +3,179 @@
 
 <head>
   <meta charset="UTF-8" name="viewport" content="width=device-width" />
-  <title>方块字标志牌生成器 | UTF-Block Sign Art Generator</title>
+  <title>方块字告示牌生成器</title>
+  <link rel="icon" href="signType-sign.webp" type="image/webp" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="fonts/fonts.css" />
 </head>
 
 <body>
-  <h1>方块字标志牌生成器<br />UTF-Block Sign Art Generator</h1>
-  <label id="inputWrapper">
-    输入文字 Input text：
-    <textarea type="text" class="autoWidth">←换乘 1 号线&#10;←To Line 1</textarea>
-  </label>
-  <div>
-    配置 Config：
-    <div id="configWrapper" class="autoWidth">
-      <div>
-        标志牌类型 Sign type：
-        <label>
-          <input type="radio" class="signType" name="signType" value="sign" checked />
-          <img src="sign.webp" alt="Sign" />
-        </label>
-        <label>
-          <input type="radio" class="signType" name="signType" value="hangingSign" />
-          <img src="hanging-sign.webp" alt="Hanging sign" />
-        </label>
+  <h1>方块字告示牌生成器</h1>
+  <div id="leftPanel">
+    <div class="config-section">
+      <div class="config-item">
+        <label class="config-item-label">输入文字</label>
+        <div id="textInputWrapper" class="textInput-wrapper">
+          <div id="textInput" class="autoWidth" contenteditable="true">←换乘 1 号线 ←To Line 1</div>
+          <div id="highlightOverlay" class="highlightOverlay"></div>
+        </div>
       </div>
-      <div id="customChar">
-        <div id="customCharButtons">自定义字符 Custom characters：
-          <label>
-            <input type="radio" onclick="setCustomChar(customChars['1.19']);" class="gameVersion" name="gameVersion"
-              value="1.0" />
-            1.0~1.19.4
+
+      <!-- 版本 -->
+      <div id="editionSection" class="config-item">
+        <label class="config-item-label">版本</label>
+        <div class="config-item-content">
+          <label class="radio-option">
+            <input type="radio" class="edition" name="edition" value="je" checked />
+            <img src="edition-je.webp" alt="Java版" />
+            <span>Java版</span>
           </label>
-          <label>
-            <input type="radio" onclick="setCustomChar(customChars['1.20']);" class="gameVersion" name="gameVersion"
-              value="1.20" checked />
-            1.20.1+
+          <label class="radio-option">
+            <input type="radio" class="edition" name="edition" value="be" />
+            <img src="edition-be.webp" alt="基岩版" />
+            <span>基岩版</span>
           </label>
         </div>
-        <div id="customCharWrapper">
-        </div>
-        <template id="customCharTemplate">
-          <label>
-            <code></code>：
-            <input name="customChar" value="" />
-          </label>
-        </template>
       </div>
+
+      <!-- 告示牌类型 -->
+      <div class="config-item">
+        <label class="config-item-label">告示牌类型</label>
+        <div class="config-item-content">
+          <label class="radio-option">
+            <input type="radio" class="signType" name="signType" value="sign" checked />
+            <img src="signType-sign.webp" alt="告示牌" />
+            <span>告示牌</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" class="signType" name="signType" value="hangingSign" />
+            <img src="signType-hangingSign.webp" alt="悬挂式告示牌" />
+            <span>悬挂式告示牌</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 字体选择 -->
+      <div class="config-item">
+        <label class="config-item-label">字体</label>
+        <div id="fontSelect" class="custom-select">
+          <div class="custom-select-trigger">
+            <span id="fontSelectText">Chill Bitmap 7px</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="custom-select-dropdown">
+            <div class="custom-select-option" data-value="Chill Bitmap 7px"
+              style="font-family: 'Chill Bitmap 7px', monospace;">Chill Bitmap 7px</div>
+            <div class="custom-select-option" data-value="精品點陣體7×7 1.71"
+              style="font-family: '精品點陣體7×7 1.71', monospace;">精品點陣體7×7 1.71</div>
+            <div class="custom-select-option" data-value="QuanPixel 8px"
+              style="font-family: 'QuanPixel 8px', monospace;">QuanPixel 8px</div>
+            <div class="custom-select-option" data-value="Fusion Pixel 8px Proportional"
+              style="font-family: 'Fusion Pixel 8px Proportional', monospace;">Fusion Pixel 8px Proportional</div>
+            <div class="custom-select-option" data-value="Fusion Pixel 8px Monospaced"
+              style="font-family: 'Fusion Pixel 8px Monospaced', monospace;">Fusion Pixel 8px Monospaced</div>
+            <div class="custom-select-option" data-value="GuanZhi 8px" style="font-family: 'GuanZhi 8px', monospace;">
+              GuanZhi 8px
+            </div>
+            <div class="custom-select-option" data-value="美績點陣體" style="font-family: '美績點陣體', monospace;">美績點陣體</div>
+            <div class="custom-select-option" data-value="美績點陣體 - 明" style="font-family: '美績點陣體 - 明', monospace;">
+              美績點陣體 - 明</div>
+            <div class="custom-select-option" data-value="Public Pixel" style="font-family: 'Public Pixel', monospace;">
+              Public Pixel</div>
+            <div class="custom-select-option" data-value="袖珍像素体" style="font-family: '袖珍像素体', monospace;">袖珍像素体</div>
+
+            <input id="fontCustomInput" class="custom-select-input" type="text" placeholder="输入自定义字体..." />
+          </div>
+        </div>
+      </div>
+
+      <!-- 字符模式 -->
+      <div class="config-item">
+        <label class="config-item-label">字符模式</label>
+        <div id="patternOptions" class="config-item-content">
+        </div>
+        <div id="patternSection" class="custom-char-section">
+          <div class="canvas-width-row">
+            <label><span class="input-title">JE告示牌<br />横向像素数量</span> <input id="custom-pixelWidth-je-sign"
+                type="number" min="0" step="2" value="20" /></label>
+            <label><span class="input-title">JE悬挂式告示牌<br />横向像素数量</span> <input id="custom-pixelWidth-je-hangingSign"
+                type="number" min="0" step="2" value="12" /></label>
+            <label><span class="input-title">BE告示牌<br />横向像素数量</span> <input id="custom-pixelWidth-be-sign"
+                type="number" min="0" step="2" value="20" /></label>
+            <label><span class="input-title">BE悬挂式告示牌<br />横向像素数量</span> <input id="custom-pixelWidth-be-hangingSign"
+                type="number" min="0" step="2" value="12" /></label>
+          </div>
+          <div id="patternWrapper"></div>
+          <template id="patternTemplate">
+            <label>
+              <code class="input-title"></code>
+              <input name="pattern" value="" />
+            </label>
+          </template>
+        </div>
+      </div>
+
+      <!-- 微调标题 -->
+      <div class="config-item">
+        <div id="adjustToggle" class="adjust-toggle">微调</div>
+      </div>
+
+      <!-- 微调面板 -->
+      <div id="adjustPanel" style="display:none;">
+        <div class="adjust-section">
+          <div class="adjust-params">
+            <div class="adjust-param">
+              <span class="input-title">横向偏移</span>
+              <input id="adjustOffsetX" class="adjust-input" type="number" min="-1" max="1" step="0.01" value="0" />
+            </div>
+            <div class="adjust-param" id="adjustOffsetYRow">
+              <span class="input-title">纵向偏移</span>
+              <input id="adjustOffsetY" class="adjust-input" type="number" min="-1" max="1" step="0.01" value="0" />
+            </div>
+            <div class="adjust-param">
+              <span class="input-title">阈值</span>
+              <input id="adjustThreshold" class="adjust-input" type="number" min="0" max="255" step="1" value="127" />
+            </div>
+            <div class="adjust-param adjust-param--plain">
+              <span class="input-title">&nbsp;</span>
+              <button id="adjustReset" class="adjust-btn">还原</button>
+            </div>
+          </div>
+          <div class="adjust-param">
+            <span class="input-title">自动更新绘制</span>
+            <div class="config-item-content">
+              <label class="radio-option">
+                <input type="radio" name="autoUpdate" value="on" />
+                <span>开启</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="autoUpdate" value="off" checked />
+                <span>关闭</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <button type="button" onclick="main()" class="btn-primary">绘制</button>
+  </div>
+  <div id="rightPanel">
+    <div id="previewWrapper">
+      <div>预览</div>
+      <div id="canvasWrapper"></div>
+    </div>
+
+    <div id="outputWrapper">
+      <div class="output-title">输出结果</div>
+      <div id="signsWrapper"></div>
     </div>
   </div>
-  <button type="button" onclick="main()">绘制 Draw</button>
-  <div id="canvasWrapper"></div>
-  <div id="signsWrapper"></div>
+
+  <script src="char.js"></script>
+  <script src="main.js"></script>
 </body>
-
-<script>
-  const customChars = {
-    "1.19": ["  ", " ▗", "▖ ", "▄", " ▝", " ▐", "▞", "▟", "▘ ", "▚", "▌ ", "▙", "▀", "▜", "▛", "█"],
-    "1.20": ["  ", " ◛", "◛ ", "▄", " ◚", "▐", "🙾", "◛▉", "◚ ", "🙿", "▌ ", "▉◛", "▀", "◚▉", "▉◚", "█"],
-  }
-  let customChar;
-  setCustomChar(customChars["1.20"]);
-
-  function setCustomChar(customChar) {
-    const customCharWrapper = document.querySelector("#customCharWrapper");
-    const customCharTemplate = document.querySelector("#customCharTemplate");
-    customCharWrapper.innerHTML = "";
-    customChar.forEach((char, index) => {
-      const charName = index.toString(2).padStart(4, "0");
-      const dom = customCharTemplate.content.cloneNode(true);
-      dom.querySelector("code").textContent = `0b${charName}`;
-      const dom_input = dom.querySelector("input");
-      dom_input.id = `customChar_0b${charName}`;
-      dom_input.value = char;
-      customCharWrapper.appendChild(dom);
-    });
-  }
-
-  function getCustomChar() {
-    const inputs = document.querySelectorAll("#customCharWrapper input[name='customChar']");
-    const result = [];
-    inputs.forEach(input => {
-      result.push(input.value);
-    });
-    return result;
-  }
-</script>
-
-<script>
-  function main() {
-    const inputText = (document.fonts.check("8px 'Chill Bitmap 7px'")) ? (document.querySelector("#inputWrapper > textarea").value) : "字体加载中... Font loading...";
-    const isHangingSign = document.querySelector(".signType:checked").value == "hangingSign";
-    const gameVersion = document.querySelector(".gameVersion:checked").value;
-    customChar = getCustomChar();
-
-    const canvases = text2canvases(inputText, isHangingSign, gameVersion);
-    const signs = canvases2signs(canvases);
-
-    const signsWrapper = document.querySelector("#signsWrapper");
-    const canvasWrapper = document.querySelector("#canvasWrapper");
-
-    renderCanvases(canvases, canvasWrapper);
-    renderSigns(signs, signsWrapper);
-  }
-
-  function text2canvases(text, isHangingSign, gameVersion) {
-    let canvases = [];
-    let textArray = Array.from(text);
-    while (textArray.length) { // 逐字绘制
-      let canvas = newCanvas(isHangingSign, gameVersion);
-      let ctx = canvas.getContext("2d");
-      let widthUsed = 0;
-      do { // 判断剩余空间足够再绘制
-        let Char = textArray.shift();
-        ctx.fillText(Char, widthUsed, canvas.height - 1);
-        widthUsed += ctx.measureText(Char).width;
-        widthCharNext = ctx.measureText(textArray[0]).width;
-      } while (widthUsed + widthCharNext <= canvas.width);
-      canvases.push(canvas);
-    }
-    return canvases;
-
-    function newCanvas(isHangingSign, gameVersion) {
-      let canvas = document.createElement("canvas");
-      canvas.className = "previewCanvas";
-      canvas.height = 8;
-      canvas.width = isHangingSign ? 12 : (gameVersion === "1.0" ? 20 : 20);
-      let ctx = canvas.getContext("2d");
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#000";
-      ctx.font = "8px 'Chill Bitmap 7px'";
-      return canvas;
-    }
-  }
-
-  function canvases2signs(canvases) {
-    let signs = [];
-
-    canvases.forEach(canvas => {
-      let canvasData = Array.from(new Array(canvas.height), () => new Array(canvas.width)); // 空二维数组
-      let sign = Array.from(new Array(canvas.height / 2), () => new Array(canvas.width / 2));
-
-      let ctx = canvas.getContext("2d");
-      let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-
-      for (let y = 0; y < canvas.height; y++) {
-        for (let x = 0; x < canvas.width; x++) { // 遍历像素
-          let i = (y * canvas.width + x) * 4;
-          const R = imgData[i];
-          const G = imgData[i + 1];
-          const B = imgData[i + 2];
-          let pixel = ((R + G + B) / 3 < 127) ? 1 : 0; // 二值化
-
-          canvasData[y][x] = pixel;
-          if (y % 2 && x % 2) { // 像素4合1，生成UTF-8块元素
-            let p1 = canvasData[y - 1][x - 1],
-              p2 = canvasData[y - 1][x],
-              p3 = canvasData[y][x - 1];
-            sign[(y - 1) / 2][(x - 1) / 2] = customChar[(p1 << 3) | (p2 << 2) | (p3 << 1) | pixel];
-          }
-        }
-      }
-      sign = sign.map(e => e.join(""));
-      signs.push(sign);
-    });
-    return signs;
-  }
-
-  function renderCanvases(canvases, wrapper) {
-    wrapper.innerHTML = "";
-    canvases.forEach(canvas => {
-      wrapper.appendChild(canvas);
-    });
-  }
-
-  function renderSigns(signs, wrapper) {
-    wrapper.innerHTML = "";
-    signs.forEach(sign => {
-      let signElement = document.createElement("div");
-      signElement.className = "sign";
-
-      sign.forEach(signLineText => {
-        let signLineElement = document.createElement("pre");
-        signLineElement.className = "signLine";
-        signLineElement.innerText = signLineText;
-        signElement.appendChild(signLineElement);
-      });
-
-      let copyButton = document.createElement("button");
-      copyButton.innerText = "复制 Copy";
-      copyButton.addEventListener("click", () => {
-        try {
-          copyToClipboard(sign.join("\n"));
-          copyButton.innerText = "已复制 Copied";
-        } catch (err) {
-          window.alert("复制失败: " + err);
-        }
-      });
-      signElement.appendChild(copyButton);
-
-      wrapper.appendChild(signElement);
-    });
-  }
-
-  function copyToClipboard(text) {
-    const clipboard = navigator.clipboard;
-    if (clipboard) {
-      clipboard.writeText(text).catch(() => {
-        execCommandCopyToClipboard();
-      });
-    }
-    else {
-      execCommandCopyToClipboard();
-    }
-
-    function execCommandCopyToClipboard() {
-      let textArea = document.createElement("textArea");
-      // textArea.style.display = "none";
-      textArea.style.position = "fixed";
-      textArea.setAttribute("readonly", "readonly");
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand("Copy");
-      textArea.remove();
-    }
-  }
-</script>
-
-<style>
-  @font-face {
-    font-family: "Chill Bitmap 7px";
-    src: url("ChillBitmap7x.woff2") format("woff2");
-  }
-
-  body,
-  button,
-  #customCharWrapper>label>input {
-    font-size: large;
-    line-height: 2;
-  }
-
-  body {
-    width: 100vmin;
-    max-width: 100%;
-    /* justify-self: center; */
-
-    display: flex;
-    flex-direction: column;
-    row-gap: 1em;
-  }
-
-  h1 {
-    font-weight: unset;
-    line-height: normal;
-    margin: unset;
-  }
-
-  .autoWidth {
-    width: 100vmin;
-    max-width: 100%;
-    border-radius: 2px;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-
-  #inputWrapper {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #inputWrapper textarea {
-    font-size: 2em;
-    font-family: "Chill Bitmap 7px";
-    resize: vertical;
-  }
-
-  #configWrapper {
-    display: flex;
-    flex-direction: column;
-    row-gap: 1em;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    background-color: #fafafa;
-    border: 1px solid #f0f0f0;
-    border-radius: 0.5em;
-  }
-
-  .signType {
-    display: none;
-  }
-
-  .signType+img {
-    width: 2em;
-    height: 2em;
-    image-rendering: pixelated;
-    border: 1px solid transparent;
-    border-radius: 2px;
-  }
-
-  .signType:checked+img {
-    border: 1px solid #000;
-  }
-
-  #customChar {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5em;
-  }
-
-  #customCharButtons {
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 0.5em;
-    column-gap: 0.5em;
-  }
-
-  .gameVersion {
-    display: none;
-  }
-
-  #customCharButtons>label {
-    padding: 0 0.5em;
-    height: 2em;
-    border: 1px solid transparent;
-    border-radius: 2px;
-  }
-
-  #customCharButtons>label:has(.gameVersion:checked) {
-    border: 1px solid #000;
-  }
-
-  #customCharWrapper {
-    display: flex;
-    /* flex-direction: column; */
-    flex-wrap: wrap;
-    row-gap: 0.5em;
-    column-gap: 1em;
-    font-family: monospace;
-  }
-
-  #customCharWrapper input {
-    width: 4em;
-  }
-
-  .previewCanvas {
-    height: 3em;
-    border: 1px solid #ccc;
-    image-rendering: pixelated;
-  }
-
-  .signLine {
-    line-height: 1;
-    font-size: 2em;
-    margin: 0;
-    -webkit-user-select: all;
-    user-select: all;
-    border: 0.5px dashed #ccc;
-    text-align: center;
-    overflow: hidden;
-  }
-
-  .sign {
-    border: 1px solid #ccc;
-    margin-right: 3px;
-    display: inline-block;
-  }
-</style>
 
 </html>
